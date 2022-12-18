@@ -41,3 +41,37 @@ Auxiliary Space Complexity:
 
 Stability:
 - Stable
+
+# Selection Sort <a name="ss"></a>
+Selection sort is a sorting algorithm in which the given array is divided into two subarrays, the sorted left section, and the unsorted right section. Initially, the sorted portion is empty and the unsorted part is the entire list. In each iteration, we fetch the minimum element from the unsorted list and push it to the end of the sorted list thus building our sorted array. Below is an example:
+![image](https://www.crio.do/blog/content/images/size/w1000/2022/01/Selection-sort-algorithm-example-1.png)
+
+Implementation in Python:
+```python
+def selection_sort(arr):
+    arr_len = len(arr)
+    for i in range(arr_len):
+        min_index = i
+        for j in range(i+1, arr_len):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+    return
+arr = [24, 37, -1, 25, 7, 99, 11, 45]
+selection_sort(arr)
+print(arr)
+```
+>[-1, 7, 11, 24, 25, 37, 45, 99]
+
+
+Time Complexity:
+- Worst Case: O(n<sup>2</sup>) 
+- Average Case: O(n<sup>2</sup>) 
+- Best case: O(n<sup>2</sup>) 
+
+Auxiliary Space Complexity:
+- O(1)
+
+Stability:
+- Unstable
+Stability explantion: think about an array [8, 3, 8, 1, 9], and after the first round, the first 8(array[0]) will be swapped with 1(array[3]). 
