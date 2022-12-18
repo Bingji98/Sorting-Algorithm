@@ -3,6 +3,7 @@
 
 # Table of Contents
 1. [Bubble Sort](#bs)
+2. [Selection Sort](#ss)
 
 # Bubble Sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
