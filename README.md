@@ -28,3 +28,15 @@ arr = [24, 37, 25, 7, 99, 11, 90]
 bubble_sort(arr)
 print(arr)
 ```
+>[7, 11, 24, 25, 37, 90, 99]
+
+Time Complexity:
+- Worst Case: O(n<sup>2</sup>) 
+- Average Case: O(n<sup>2</sup>) 
+- Best case: O(n)
+
+Auxiliary Space Complexity:
+- O(1)
+
+Stability:
+- Stable
