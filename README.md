@@ -11,6 +11,7 @@
 7. [Radix Sort](#rs)
 8. [Bucket Sort](#bks)
 9. [Shell Sort](#shs)
+10. [Heap Sort](#hs)
 
 # Bubble sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
@@ -398,6 +399,74 @@ Time Complexity:
 - Worst Case: O(n<sup>2</sup>) 
 - Average Case: O(n<sup>1.3</sup>) 
 - Best case: O(n)
+
+Auxiliary Space Complexity:
+- O(1)
+
+Stability:
+- Unstable
+
+# Heap sort <a name="hs"></a>
+Heapsort is a comparison-based sorting technique based on a Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end. We repeat the same process for the remaining element.
+
+
+Implementation in Python:
+```python
+def heapify(arr, n, i):
+    largest = i  # Initialize largest as root
+    l = 2 * i + 1  # left = 2*i + 1
+    r = 2 * i + 2  # right = 2*i + 2
+
+ # See if left child of root exists and is
+ # greater than root
+
+    if l < n and arr[i] < arr[l]:
+        largest = l
+
+ # See if right child of root exists and is
+ # greater than root
+
+    if r < n and arr[largest] < arr[r]:
+        largest = r
+
+ # Change root, if needed
+
+    if largest != i:
+        (arr[i], arr[largest]) = (arr[largest], arr[i])  # swap
+
+  # Heapify the root.
+
+        heapify(arr, n, largest)
+
+
+# The main function to sort an array of given size
+
+def heap_sort(arr):
+    n = len(arr)
+
+ # Build a maxheap.
+ # Since last parent will be at ((n//2)-1) we can start at that location.
+
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+ # One by one extract elements
+
+    for i in range(n - 1, 0, -1):
+        (arr[i], arr[0]) = (arr[0], arr[i])  # swap
+        heapify(arr, i, 0)
+
+arr = [12, 24, 37, -1, -20, 7, 99, 11, 45]
+heap_sort(arr)
+print(arr)
+```
+>[-20, -1, 7, 11, 12, 24, 37, 45, 99]
+
+
+Time Complexity:
+- Worst Case: O(n*logn) 
+- Average Case: O(n*logn) 
+- Best case: O(n*logn) 
 
 Auxiliary Space Complexity:
 - O(1)
