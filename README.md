@@ -7,6 +7,7 @@
 3. [Insertion Sort](#is)
 4. [Quick Sort](#qs)
 5. [Merge Sort](#ms)
+6. [Counting Sort](#cs)
 
 # Bubble sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
@@ -115,7 +116,7 @@ Stability:
 - Stable
 
 # Quick sort <a name="qs"></a>
-Quick Sort is a divide and conquer algorithm. The intuitive idea behind quick sort is it picks an element as the pivot(usually the last element) from a given array of elements and then partitions the array around the pivot element. Subsequently, it calls itself recursively and partitions the two subarrays thereafter. Below is an example:
+Quick Sort is **a divide and conquer algorithm**. The intuitive idea behind quick sort is it picks an element as the pivot(usually the last element) from a given array of elements and then partitions the array around the pivot element. Subsequently, it calls itself recursively and partitions the two subarrays thereafter. Below is an example:
 ![image](https://www.crio.do/blog/content/images/size/w1000/2022/01/Quick-Sort-Algorithm-flow.png)
 
 Implementation in Python:
@@ -158,7 +159,7 @@ Stability:
 Quicksort with in-place and unstable partitioning uses only constant additional space before making any recursive call. Quicksort must store a constant amount of information for each nested recursive call.
 
 # Merge sort <a name="ms"></a>
-Merge Sort is a divide-and-conquer algorithm. In each iteration, merge sort divides the input array into two equal subarrays, calls itself recursively for the two subarrays, and finally merges the two sorted halves. Below is an example:
+Merge Sort is **a divide-and-conquer algorithm**. In each iteration, merge sort divides the input array into two equal subarrays, calls itself recursively for the two subarrays, and finally merges the two sorted halves. Below is an example:
 ![image](https://www.crio.do/blog/content/images/size/w2400/2022/01/Merge-sort-algorithm-flow.png)
 
 Implementation in Python:
@@ -203,3 +204,47 @@ Auxiliary Space Complexity:
 
 Stability:
 - Stable
+
+# Counting sort <a name="cs"></a>
+It works by counting the number of elements having distinct key values and then building a sorted array after calculating the position of each unique element in the unsorted sequence. It stands apart from the algorithms listed above because it literally involves zero comparisons between the input data elements! Below is an example:
+![image](https://www.crio.do/blog/content/images/2022/01/Counting-sort-algorithm-example-1.png)
+
+Implementation in Python:
+```python
+def counting_sort(arr):
+    if not arr:
+        return arr
+    sorted_list = [0 for _ in range(len(arr))]
+    count = dict()
+    min_num = float("inf")
+    max_num = float("-inf")
+    for x in arr:  # count the number of occurrence of each unique item
+        count[x] = count.get(x, 0) + 1
+        max_num = max(max_num, x)
+        min_num = min(min_num, x)
+    for x in range(min_num, max_num+1):  # get the correct index of each unique item in the sorted list
+        count[x] = count.get(x-1, 0) + count.get(x, 0)
+    for x in arr:  # put each item in the correct place
+        sorted_list[count[x]-1] = x
+        count[x] -= 1
+    for i in range(len(arr)):  # change in place
+        arr[i] = sorted_list[i]
+    return
+
+arr = [77, 12, 24, 37, -20, 156, 7, 99, 7, 11, 103, 45, -17]
+counting_sort(arr)
+print(arr)
+```
+>[-20, -17, 7, 7, 11, 12, 24, 37, 45, 77, 99, 103, 156]
+
+Time Complexity:
+- Worst Case: O(n+k) 
+- Average Case: O(n+k) 
+- Best case: O(n+k), where n is the number of elements in the array and k is the range of the elements.
+
+Auxiliary Space Complexity:
+- O(n+k)
+
+Stability:
+- Stable
+
