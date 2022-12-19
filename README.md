@@ -6,6 +6,7 @@
 2. [Selection Sort](#ss)
 3. [Insertion Sort](#is)
 4. [Quick Sort](#qs)
+5. [Merge Sort](#ms)
 
 # Bubble sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
@@ -117,6 +118,7 @@ Stability:
 Quick Sort is a divide and conquer algorithm. The intuitive idea behind quick sort is it picks an element as the pivot(usually the last element) from a given array of elements and then partitions the array around the pivot element. Subsequently, it calls itself recursively and partitions the two subarrays thereafter. Below is an example:
 ![image](https://www.crio.do/blog/content/images/size/w1000/2022/01/Quick-Sort-Algorithm-flow.png)
 
+Implementation in Python:
 ```python
 def partition(arr, low, high):
     pivot = arr[high]
@@ -151,6 +153,53 @@ Auxiliary Space Complexity:
 - O(logn)
 
 Stability:
-- Stable
+- Unstable
 
 Quicksort with in-place and unstable partitioning uses only constant additional space before making any recursive call. Quicksort must store a constant amount of information for each nested recursive call.
+
+# Merge sort <a name="ms"></a>
+Merge Sort is a divide-and-conquer algorithm. In each iteration, merge sort divides the input array into two equal subarrays, calls itself recursively for the two subarrays, and finally merges the two sorted halves. Below is an example:
+![image](https://www.crio.do/blog/content/images/size/w2400/2022/01/Merge-sort-algorithm-flow.png)
+
+Implementation in Python:
+```python
+def merge(arr, left, mid, right):
+    left_list = arr[left:mid+1]
+    right_list = arr[mid+1:right+1]
+    while left_list and right_list:  # merge two sorted list
+        if left_list[0] <= right_list[0]:
+            arr[left] = left_list.pop(0)
+        else:
+            arr[left] = right_list.pop(0)
+        left += 1
+    # make the remaining elements to the end
+    if left_list:
+        arr[left:right+1] = left_list
+    if right_list:
+        arr[left:right+1] = right_list
+    return
+
+def merge_sort(arr, left, right):
+    if left < right:
+        mid = (left + right) // 2
+        merge_sort(arr, left, mid)
+        merge_sort(arr, mid+1, right)
+        merge(arr, left, mid, right)
+    return
+
+arr = [77, 12, 24, 37, -20, 156, 7, 99, 7, 11, 103, 45]
+merge_sort(arr, 0, len(arr)-1)
+print(arr)
+```
+>[-20, 7, 7, 11, 12, 24, 37, 45, 77, 99, 103, 156]
+
+Time Complexity:
+- Worst Case: O(n*logn) 
+- Average Case: O(n*logn) 
+- Best case: O(n*logn) 
+
+Auxiliary Space Complexity:
+- O(n)
+
+Stability:
+- Stable
