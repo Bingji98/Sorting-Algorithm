@@ -10,6 +10,7 @@
 6. [Counting Sort](#cs)
 7. [Radix Sort](#rs)
 8. [Bucket Sort](#bks)
+9. [Shell Sort](#shs)
 
 # Bubble sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
@@ -366,3 +367,40 @@ Auxiliary Space Complexity:
 
 Stability:
 - Stable
+
+# Shell sort <a name="shs"></a>
+Shell sort algorithm is an improvement over the insertion sort algorithm wherein we resort to diminishing partitions to sort our data. In each pass, we reduce the gap size to half of its previous value for each pass throughout the array. Thus for each iteration, the array elements are compared by the calculated gap value and swapped (if necessary).
+
+Implementation in Python:
+```python
+def shell_sort(arr):
+    arr_len = len(arr)
+    gap = int(arr_len/2)
+    while gap:
+        for i in range(gap, arr_len):
+            val = arr[i]
+            j = i
+            while j >= gap and val < arr[j-gap]: # find the place to insert arr[i]
+                arr[j] = arr[j-gap]
+                j -= gap
+            arr[j] = val
+        gap = int(gap/2)
+    return
+
+arr = [12, 24, 37, -1, -20, 7, 99, 11, 45]
+shell_sort(arr)
+print(arr)
+```
+>[-20, -1, 7, 11, 12, 24, 37, 45, 99]
+
+
+Time Complexity:
+- Worst Case: O(n<sup>2</sup>) 
+- Average Case: O(n<sup>1.3</sup>) 
+- Best case: O(n)
+
+Auxiliary Space Complexity:
+- O(1)
+
+Stability:
+- Unstable
