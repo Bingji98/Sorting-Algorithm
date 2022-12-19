@@ -8,6 +8,7 @@
 4. [Quick Sort](#qs)
 5. [Merge Sort](#ms)
 6. [Counting Sort](#cs)
+7. [Radix Sort](#rs)
 
 # Bubble sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
@@ -248,3 +249,75 @@ Auxiliary Space Complexity:
 Stability:
 - Stable
 
+# Radix sort <a name="rs"></a>
+Counting sort fails if the input array ranges from 1 to n<sup>2</sup> in which case its time complexity increases to O(n<sup>2</sup>). The basic idea behind radix sorting is to extend the functionality of counting sort to get a better time-complexity when input array elements range from 1 till n<sup>2</sup>. Below is an example:
+![image](https://www.crio.do/blog/content/images/2022/01/Radix-sort-algorithm-example-1.png)
+
+Implementation in Python:
+```python
+def counting_sort(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10  # 10 possible cases for a digit
+
+    # Store count of occurrences in a digit
+    for i in range(0, n):
+        index = arr[i]//exp
+        count[index % 10] += 1
+
+    for i in range(1,10):
+        count[i] += count[i-1]
+
+    # Build the output array
+    for i in range(n-1, -1, -1):
+        index = arr[i]//exp
+        output[count[index % 10] - 1] = arr[i]
+        count[index % 10] -= 1
+
+    for i in range(0,len(arr)):
+        arr[i] = output[i]
+    return
+
+def radix_sort(arr):
+    positive_list = [x for x in arr if x >= 0]
+    negative_list = [-x for x in arr if x < 0]
+    # Find the maximum number to know number of digits
+    max_num_pos = max(positive_list)
+    max_num_neg = max(negative_list)
+
+    # Do counting sort for every digit. Note that instead
+    # of passing digit number, exp is passed. exp is 10^i
+    # where i is current digit number
+    exp = 1
+    while max_num_pos/exp > 0:
+        counting_sort(positive_list, exp)
+        exp *= 10
+
+    exp = 1
+    while max_num_neg/exp > 0:
+        counting_sort(negative_list, exp)
+        exp *= 10
+    # merge positive list and negative list
+    for i in range(len(arr)):
+        if i < len(negative_list):
+            arr[i] = -negative_list[len(negative_list) - i - 1]
+        else:
+            arr[i] = positive_list[i - len(negative_list)]
+    return
+
+arr = [77, 12, 24, 37, -20, 156, 7, 99, 7, 11, 103, 45, -17]
+radix_sort(arr)
+print(arr)
+```
+> [-20, -17, 7, 7, 11, 12, 24, 37, 45, 77, 99, 103, 156]
+
+Time Complexity:
+- Worst Case: O(nd) 
+- Average Case: O(nd) 
+- Best case: O(nd), where n is the size of the array and d is the number of digits in the largest number. 
+
+Auxiliary Space Complexity:
+- O(n+k)
+
+Stability:
+- Stable
