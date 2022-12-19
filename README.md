@@ -9,6 +9,7 @@
 5. [Merge Sort](#ms)
 6. [Counting Sort](#cs)
 7. [Radix Sort](#rs)
+8. [Bucket Sort](#bks)
 
 # Bubble sort <a name="bs"></a>
 The basic idea of bubble sorting is that it repeatedly swaps adjacent elements if they are not in the desired order. **As a result, after the N<sup>th</sup> round, the N<sup>th</sup> largest number will be switched to the N<sup>th</sup> place.**
@@ -262,7 +263,7 @@ def counting_sort(arr, exp):
 
     # Store count of occurrences in a digit
     for i in range(0, n):
-        index = arr[i]//exp
+        index = arr[i] // exp
         count[index % 10] += 1
 
     for i in range(1,10):
@@ -270,7 +271,7 @@ def counting_sort(arr, exp):
 
     # Build the output array
     for i in range(n-1, -1, -1):
-        index = arr[i]//exp
+        index = arr[i] // exp
         output[count[index % 10] - 1] = arr[i]
         count[index % 10] -= 1
 
@@ -315,6 +316,50 @@ Time Complexity:
 - Worst Case: O(nd) 
 - Average Case: O(nd) 
 - Best case: O(nd), where n is the size of the array and d is the number of digits in the largest number. 
+
+Auxiliary Space Complexity:
+- O(n+k)
+
+Stability:
+- Stable
+
+# Bucket sort <a name="bks"></a>
+Bucket Sort is a comparison-based sorting technique that operates on array elements **by dividing them into multiple buckets recursively and then sorting these buckets individually using a separate sorting algorithm altogether**. Finally, the sorted buckets are re-combined to produce the sorted array.
+
+Implementation in Python:
+```python
+def bucket_sort(arr):
+    max_num = max(arr)
+    min_num = min(arr)
+    arr_len = len(arr)
+    size = (max_num - min_num)/arr_len
+
+    buckets = [[] for _ in range(arr_len)]  # initialize the bucket
+    for i in range(arr_len):
+        j = int((arr[i] - min_num) / size)
+        if j != arr_len:
+            buckets[j].append(arr[i])
+        else:
+            buckets[arr_len - 1].append(arr[i])
+
+    for i in range(arr_len):
+        insertion_sort(buckets[i])
+
+    result = []
+    for i in range(arr_len):
+        result = result + buckets[i]
+    return result
+
+arr = [77, 12, 24, 37, -20, 156, 7, 99, 7, 11, 103, 45, -17, -3]
+sorted_arr = bucket_sort(arr)
+print(sorted_arr)
+```
+> [-20, -17, -3, 7, 7, 11, 12, 24, 37, 45, 77, 99, 103, 156]
+
+Time Complexity:
+- Worst Case: O(n<sup>2</sup>) 
+- Average Case: O(n+k) 
+- Best case: O(n+k), where n is the number of elements, and k is the number of buckets.
 
 Auxiliary Space Complexity:
 - O(n+k)
